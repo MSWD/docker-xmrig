@@ -8,8 +8,13 @@ ENV VERSION "6.16.2"
 
 WORKDIR /src
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    wget && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y \
+    wget \
+    pciutils \
+    less \
+    clinfo && \
+    apt-cache search opencl | grep -i intel | cut -d\  -f1 | xargs apt -y install && \
     wget https://github.com/xmrig/xmrig/releases/download/v6.16.2/xmrig-${VERSION}-linux-x64.tar.gz -O /tmp/xmrig.tar.gz && \
     tar -zxvf /tmp/xmrig.tar.gz -C /tmp && \
     mv /tmp/xmrig-${VERSION}/xmrig /usr/bin && \
